@@ -1,0 +1,24 @@
+<div>
+    <h3>Create New User</h3>
+        <form>
+            <label for="accountType">Select the type of account to create:</label>
+                <select name="accountType">
+                    <option value="admin">New Admin</option>
+                    <option value="bus-driver" selected="selected">Bus Driver</option>
+                </select>
+                    <br />
+            <label for="districtNumber">Enter the district number: </label>
+                <input type="text" name="districtNumber" required />
+                    <br />
+            <label for="fullname">Enter thier full name: </label>
+                <input type="text" name="fullname" required placeholder="e.g. first middle last" />
+                    <br />
+            <label for="userName">Assign a user name: </label>
+                <input type="text" name="userName" required placeholder="e.g. Jsmith">
+            <label for="password">Assign a password: </label>
+                <input type="password" name="password" id="pass1" pattern=".{6,10}" required title="Required: 6 - 10 characters" />
+            <label for="re-password">Re-enter password: </label>
+                <input type="password" name="re-password" id="pass2" required />
+            <input type="submit" value="Add User" />
+        </form>
+</div>
