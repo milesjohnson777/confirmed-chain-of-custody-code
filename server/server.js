@@ -12,6 +12,8 @@ var Student = require('../models/student');
 var mongoURI = 'mongodb://localhost/ccc';
 var mongoDB = mongoose.connect(mongoURI).connection;
 
+app.set('port', (process.env.PORT) || 4000);
+
 app.use(session({
     secret: 'secret',
     key: 'user',
@@ -58,14 +60,78 @@ passport.use('local', new localStrategy({
     }
 ));
 
-app.set('port', (process.env.PORT) || 5000);
-
-
 //TODO create get call resonses
+app.route('/users')
+        .get(function(req, res){
+            User.find(function(err, users){
+                if(err){
+                    console.log(err);
+                }
+                res.send(users);
+            });
+        }).
+        post(function(req, res){
+            var user = new User({
+                districtNumber: req.body.district,
+                fullname: req.body.fullname,
+                userName: req.body.username,
+                accountType: req.body.type,
+                password: req.body.password
+            });
+            user.save(function(err, user){
+                if(err){
+                    console.log(err);
+                }
+                res.send(user);
+            });
+        });
+    app.route('/users/:id').delete(function(req, res){
+        User.findByIdAndRemove(req.params.id, function(err, user){
+            if(err){
+                console.log(err);
+            }
+            res.send(user);
+        });
+    });
 
+    app.route('/students')
+            .get(function(req, res){
+                Student.find(function(err, students){
+                    if(err){
+                        console.log(err);
+                    }
+                    res.send(students);
+                });
+            })
+            .post(function(req, res){
+                var student = new Student({
+                    fullname: req.body.fullname,
+                    custodian: req.body.custodian,
+                    cross: req.body.cross,
+                    image: req.body.image
+                });
+                student.save(function(err, student){
+                    if(err){
+                        console.log(err);
+                    }
+                    res.send(student);
+                });
+            });
+        app.route('/students/:id').delete(function(req, res){
+            Student.findByIdAndRemove(req.params.id, function(err, student){
+                if(err){
+                    console.log(err);
+                }
+                res.send(student);
+            });
+        });
 
 
 app.get('/*', function(req, res){
-    var file = req.params[0] || '/views/index.html';
+    var file = req.params[0] || '/views/login.html';
     res.sendFile(path.join(__dirname, './public/', file));
+});
+
+app.listen(app.get('port'), function(){
+    console.log('Listening on port #', app.get('port'));
 });

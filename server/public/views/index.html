@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp">
     <head>
         <meta charset="utf-8">
         <title>Dashboard</title>
@@ -14,16 +14,85 @@
                 <script type="text/javascript" src="/assets/vendors/angular-material.min.js"></script>
                 <script type="text/javascript" src="/assets/vendors/angular-route.min.js"></script>
                 <script type="text/javascript" src="/assets/vendors/angular-file-upload.min.js"></script>
-                <script type="text/javascript" src="assets/client.js"></script>
+                <script type="text/javascript" src="/assets/client.js"></script>
+                <script type="text/javascript" src="/assets/factories.js"></script>
     </head>
-    <body>
+    <body ng-controller="TabCtrl">
         <nav>
-            <a href="#Search">Search</a>
-            <a href="#Manage">Manage</a>
+                <a href ng-click="setTab(1)">Search</a>
+                <a href ng-click="setTab(2)">Manage</a>
         </nav>
-        <main ng-view>
+        <main>
+            <!-- SEARCH TAB -->
+            <div ng-show="isSet(1)">
+                <form>
+                    <input type="text" name="search" placeholder="user name or student" />
+                    <input type="submit" value="search" />
+                </form>
+            </div>
 
+            <!-- MANAGE TAB -->
+            <div ng-show="isSet(2)">
+                <div ng-controller="SubTabCtrl">
+                    <a href ng-click="setSubTab(1)">User Accounts</a>
+                    <a href ng-click="setSubTab(2)">Students</a>
+                        <!--  USER SUBTAB OF MANAGE TAB -->
+                        <div ng-show="isSubSet(1)">
+                            <h3>Create New User Account</h3>
+                            <form ng-controller="CallCtrl">
+                                <label for="accountType">Select the type of account to create:</label>
+                                    <select ng-model="users.type" name="accountType">
+                                        <option value="bus-driver" selected="selected">Bus Driver</option>
+                                        <option value="admin">New Admin</option>
+                                    </select>
+                                        <br />
+                                <label for="districtNumber">Enter the district number: </label>
+                                    <input ng-model="users.district" type="text" name="districtNumber" required />
+                                        <br />
+                                <label for="fullname">Enter thier full name: </label>
+                                    <input ng-model="users.fullname" type="text" name="fullname" required placeholder="e.g. first middle last" />
+                                        <br />
+                                <label for="username"> Assign a user name: </label>
+                                    <input ng-model="users.username" type="text" name="username" required placeholder="e.g. Jsmith"/>
+                                        <br />
+                                <label for="password">Assign a password: </label>
+                                    <input ng-model="users.password" type="password" name="password" pattern=".{6,10}" required title="Required: 6 - 10 characters" />
+                                        <br />
+                                <input type="submit" value="Add User" ng-click="submitUser(users)"/>
+                            </form>
+                            <h3>All User Accounts</h3>
+                                <ul>
+                                    <!-- TODO: populated list of all users from DB-->
+                                </ul>
+                        </div>
+                    <!-- STUDENT SUBTAB OF MANAGE TAB -->
+                    <div ng-show="isSubSet(2)">
+                        <h3>Create New Student</h3>
+                            <form ng-controller="CallCtrl">
+                                <label for="fullname">Please Enter Full Name:</label>
+                                    <input ng-model="students.fullname" type="text" name="fullname" required placeholder="e.g. first middle last" />
+                                        <br />
+                                <label for="crossroad">Please Enter Bus Stop Cross Street address:</label>
+                                    <input ng-model="students.cross" type="text" name="crossroad" required placeholder="e.g. 5th ave and Main" />
+                                        <br />
+                                <label for="image">Please Enter Image URL:</label>
+                                    <input ng-model="students.image" type="text" />
+                                        <br />
+                                <input type="submit" value="Add Student" />
+                            </form>
+                            <h3>All Students</h3>
+                                <ul>
+                                    <!-- TODO: populated list of all students from DB -->
+                                </ul>
+                    </div>
+                </div>
+            </div>
         </main>
+<!--
+
+
+
+ -->
 
     </body>
 </html>

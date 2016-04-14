@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp">
     <head>
         <meta charset="utf-8">
         <title>Login</title>
@@ -15,17 +15,20 @@
         <script type="text/javascript" src="/assets/vendors/angular-route.min.js"></script>
         <script type="text/javascript" src="assets/client.js"></script> <!--MINE-->
     </head>
-    <body>
+    <body layout-align="center center" layout="column">
         <h2>Welcome! Please Login.</h2>
-
-        <div>
+        <div >
             <form>
                 <label for="districtNumber">District ID#: </label>
                     <input type="number" name="districtNumber" />
+                        <br />
                 <label for="userName">User Name: </label>
                     <input type="text" name="userName" />
+                        <br />
                 <label for="password">Password: </label>
                     <input type="password" name="password" />
+                        <br />
+                <input type="submit" value="Login" />
             </form>
         </div>
     </body>

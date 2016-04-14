@@ -1,10 +1,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var StudentSchema = new Schema({
-    districtNumber: {type: Number, required: true},
+var Student = new Schema({
     fullname: {type: String, required: true},
-    custodian: {type: String, required: true, default: 'home'}
+    custodian: {type: String, default: 'home'},
+    cross: {type: String, required: true},
+    image: {type: String}
 });
 
-module.exports = mongoose.model('Student', StudentSchema);
+module.exports = mongoose.model('Student', Student);
