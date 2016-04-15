@@ -1,9 +1,9 @@
 myApp.factory('CallService', ['$http', function($http){
-        var students = {};
-        var users = {};
+        var allStudents;
+        var allUsers;
         var getStudents = function(){
             $http.get('/students').then(function(response){
-                students.data = response.data;
+                // allStudents.data = response.data;
             });
         };
         var postStudents = function(){
@@ -18,11 +18,12 @@ myApp.factory('CallService', ['$http', function($http){
         };
         var getUsers = function(){
             $http.get('/users').then(function(response){
-                users.data = response.data;
+                // allUsers.data = response.data;
             });
         };
-        var postUsers = function(){
-            $http.post('/users').then(function(){
+        var postUsers = function(user){
+            $http.post('/users').then(function(response){
+                console.log(user);
                 getUsers();
             });
         };
@@ -32,8 +33,6 @@ myApp.factory('CallService', ['$http', function($http){
             });
         };
     return{
-        users: users,
-        students: students,
         getStudents: getStudents,
         postStudents: postStudents,
         deleteStudents: deleteStudents,

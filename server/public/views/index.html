@@ -24,7 +24,7 @@
         </nav>
         <main>
             <!-- SEARCH TAB -->
-            <div ng-show="isSet(1)">
+            <div ng-show="isSet(2)">
                 <form>
                     <input type="text" name="search" placeholder="user name or student" />
                     <input type="submit" value="search" />
@@ -32,7 +32,7 @@
             </div>
 
             <!-- MANAGE TAB -->
-            <div ng-show="isSet(2)">
+            <div ng-show="isSet(1)">
                 <div ng-controller="SubTabCtrl">
                     <a href ng-click="setSubTab(1)">User Accounts</a>
                     <a href ng-click="setSubTab(2)">Students</a>
@@ -42,7 +42,7 @@
                             <form ng-controller="CallCtrl">
                                 <label for="accountType">Select the type of account to create:</label>
                                     <select ng-model="users.type" name="accountType">
-                                        <option value="bus-driver" selected="selected">Bus Driver</option>
+                                        <option value="bus-driver">Bus Driver</option>
                                         <option value="admin">New Admin</option>
                                     </select>
                                         <br />

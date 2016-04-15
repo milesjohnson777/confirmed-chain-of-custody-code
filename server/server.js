@@ -9,6 +9,8 @@ var localStrategy = require('passport-local');
 var mongoose = require('mongoose');
 var User = require('../models/user');
 var Student = require('../models/student');
+
+
 var mongoURI = 'mongodb://localhost/ccc';
 var mongoDB = mongoose.connect(mongoURI).connection;
 
@@ -60,7 +62,6 @@ passport.use('local', new localStrategy({
     }
 ));
 
-//TODO create get call resonses
 app.route('/users')
         .get(function(req, res){
             User.find(function(err, users){
@@ -69,19 +70,25 @@ app.route('/users')
                 }
                 res.send(users);
             });
-        }).
-        post(function(req, res){
+        })
+        .post(function(req, res){
+            // console.log("in /users post function");
+            console.log("req.body: ", req.body);
             var user = new User({
+                accountType: req.body.type,
                 districtNumber: req.body.district,
                 fullname: req.body.fullname,
                 userName: req.body.username,
-                accountType: req.body.type,
                 password: req.body.password
             });
+            console.log("user: ", user);
             user.save(function(err, user){
+                // console.log("in /users post user.save function");
                 if(err){
                     console.log(err);
                 }
+                // console.log("req.body: ", req.body);
+                // console.log("user: ", user);
                 res.send(user);
             });
         });
@@ -117,14 +124,14 @@ app.route('/users')
                     res.send(student);
                 });
             });
-        app.route('/students/:id').delete(function(req, res){
-            Student.findByIdAndRemove(req.params.id, function(err, student){
-                if(err){
-                    console.log(err);
-                }
-                res.send(student);
-            });
+    app.route('/students/:id').delete(function(req, res){
+        Student.findByIdAndRemove(req.params.id, function(err, student){
+            if(err){
+                console.log(err);
+            }
+            res.send(student);
         });
+    });
 
 
 app.get('/*', function(req, res){

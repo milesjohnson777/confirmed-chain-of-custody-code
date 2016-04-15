@@ -1,4 +1,4 @@
-var myApp = angular.module('myApp', ['ngMaterial', 'ngMessages', 'ngRoute']);
+var myApp = angular.module('myApp', ['ngMaterial', 'ngMessages']);
     myApp.controller('TabCtrl', ['$scope', function($scope){
         $scope.tab = 1;
         $scope.setTab = function(newTab){
@@ -18,8 +18,11 @@ var myApp = angular.module('myApp', ['ngMaterial', 'ngMessages', 'ngRoute']);
         };
     }]);
     myApp.controller('CallCtrl', ['$scope', 'CallService', function($scope, CallService){
-        $scope.students = CallService.students;
+
+        $scope.students;
         $scope.submitStudent = CallService.postStudents;
-        $scope.users = CallService.users;
+
+        $scope.users;
         $scope.submitUser = CallService.postUsers;
+        
     }]);
