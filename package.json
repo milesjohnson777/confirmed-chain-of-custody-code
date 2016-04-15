@@ -1,7 +1,7 @@
 {
   "name": "confirmed-chain-of-custody",
   "version": "1.0.0",
-  "description": "",
+  "description": "https://docs.google.com/document/d/17uw6LFoVdPkBMHJJd5jxgn_05-1TgTnQJMVPnMybB0A/edit",
   "main": "index.js",
   "scripts": {
     "start": "node server/server.js",
