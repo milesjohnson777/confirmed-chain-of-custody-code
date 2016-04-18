@@ -21,7 +21,7 @@ app.use(session({
     key: 'user',
     resave: true,
     s: false,
-    cookie:{maxAge: -1, secure: true}
+    cookie:{maxAge: null, secure: true}
 }));
 
 app.use(cookieParser());
@@ -42,10 +42,9 @@ passport.deserializeUser(function(id, done){
 });
 
 passport.use('local', new localStrategy({
-    passReqToCallback: true,
-    usernameField: 'username' },
+    passReqToCallback: true},
     function(req, username, password, done){
-        User.findOne({username: username}, function(err, user){
+        User.findOne({userName: username}, function(err, user){
             if(err) throw err;
             if(!user){
                 return done(null, false, {message: "Incorrect userID or password"});
@@ -72,7 +71,6 @@ app.route('/users')
             });
         })
         .post(function(req, res){
-            // console.log("in /users post function");
             console.log("req.body: ", req.body);
             var user = new User({
                 accountType: req.body.type,
@@ -83,12 +81,9 @@ app.route('/users')
             });
             console.log("user: ", user);
             user.save(function(err, user){
-                // console.log("in /users post user.save function");
                 if(err){
                     console.log(err);
                 }
-                // console.log("req.body: ", req.body);
-                // console.log("user: ", user);
                 res.send(user);
             });
         });
@@ -100,6 +95,15 @@ app.route('/users')
             res.send(user);
         });
     });
+
+    // app.route('/users/:accountType').delete(function(req, res){
+    //     User.findByIdAndRemove(req.params.id, function(err, user){
+    //         if(err){
+    //             console.log(err);
+    //         }
+    //         res.send(user);
+    //     });
+    // });
 
     app.route('/students')
             .get(function(req, res){
@@ -133,6 +137,18 @@ app.route('/users')
         });
     });
 
+    app.post('/auth', function(req, res, next){
+        passport.authenticate('local', function(err, user, info){
+            if(req.user.userName === 'admin'){
+                return {successRedirect: '/views/index.html'}
+            }
+            if(req.user.userName === 'bus-driver'){
+                return {successRedirect: '/views/pickup.html'}
+            }else{
+                return {failureRedirect: '/views/re-login.html'}
+            }
+        })(req, res, next);
+    });
 
 app.get('/*', function(req, res){
     var file = req.params[0] || '/views/login.html';

@@ -22,9 +22,9 @@
                 <a href ng-click="setTab(1)">Search</a>
                 <a href ng-click="setTab(2)">Manage</a>
         </nav>
-        <main>
+        <main ng-controller="CallCtrl">
             <!-- SEARCH TAB -->
-            <div ng-show="isSet(2)">
+            <div ng-show="isSet(1)">
                 <form>
                     <input type="text" name="search" placeholder="user name or student" />
                     <input type="submit" value="search" />
@@ -32,67 +32,61 @@
             </div>
 
             <!-- MANAGE TAB -->
-            <div ng-show="isSet(1)">
+            <div ng-show="isSet(2)">
                 <div ng-controller="SubTabCtrl">
                     <a href ng-click="setSubTab(1)">User Accounts</a>
                     <a href ng-click="setSubTab(2)">Students</a>
                         <!--  USER SUBTAB OF MANAGE TAB -->
                         <div ng-show="isSubSet(1)">
                             <h3>Create New User Account</h3>
-                            <form ng-controller="CallCtrl">
+                            <form>
                                 <label for="accountType">Select the type of account to create:</label>
-                                    <select ng-model="users.type" name="accountType">
+                                    <select ng-model="user.type" name="accountType">
                                         <option value="bus-driver">Bus Driver</option>
                                         <option value="admin">New Admin</option>
                                     </select>
                                         <br />
                                 <label for="districtNumber">Enter the district number: </label>
-                                    <input ng-model="users.district" type="text" name="districtNumber" required />
+                                    <input ng-model="user.district" type="text" name="districtNumber" required />
                                         <br />
                                 <label for="fullname">Enter thier full name: </label>
-                                    <input ng-model="users.fullname" type="text" name="fullname" required placeholder="e.g. first middle last" />
+                                    <input ng-model="user.fullname" type="text" name="fullname" required placeholder="e.g. first middle last" />
                                         <br />
                                 <label for="username"> Assign a user name: </label>
-                                    <input ng-model="users.username" type="text" name="username" required placeholder="e.g. Jsmith"/>
+                                    <input ng-model="user.username" type="text" name="username" required placeholder="e.g. Jsmith"/>
                                         <br />
                                 <label for="password">Assign a password: </label>
-                                    <input ng-model="users.password" type="password" name="password" pattern=".{6,10}" required title="Required: 6 - 10 characters" />
+                                    <input ng-model="user.password" type="password" name="password" pattern=".{6,10}" required title="Required: 6 - 10 characters" />
                                         <br />
-                                <input type="submit" value="Add User" ng-click="submitUser(users)"/>
+                                <input type="submit" value="Add User" ng-click="submitUser()"/>
                             </form>
                             <h3>All User Accounts</h3>
-                                <ul>
-                                    <!-- TODO: populated list of all users from DB-->
+                                <ul ng-repeat="listuser in listOfUsers">
+                                    <li> {{ listuser.fullname }} <a href ng-click="deleteUser(listuser)">delete</a></li>
                                 </ul>
                         </div>
                     <!-- STUDENT SUBTAB OF MANAGE TAB -->
                     <div ng-show="isSubSet(2)">
                         <h3>Create New Student</h3>
-                            <form ng-controller="CallCtrl">
+                            <form>
                                 <label for="fullname">Please Enter Full Name:</label>
-                                    <input ng-model="students.fullname" type="text" name="fullname" required placeholder="e.g. first middle last" />
+                                    <input ng-model="student.fullname" type="text" name="fullname" required placeholder="e.g. first middle last" />
                                         <br />
                                 <label for="crossroad">Please Enter Bus Stop Cross Street address:</label>
-                                    <input ng-model="students.cross" type="text" name="crossroad" required placeholder="e.g. 5th ave and Main" />
+                                    <input ng-model="student.cross" type="text" name="crossroad" required placeholder="e.g. 5th ave and Main" />
                                         <br />
                                 <label for="image">Please Enter Image URL:</label>
-                                    <input ng-model="students.image" type="text" />
+                                    <input ng-model="student.image" type="text" />
                                         <br />
-                                <input type="submit" value="Add Student" />
+                                <input type="submit" value="Add Student" ng-click="submitStudent()" />
                             </form>
                             <h3>All Students</h3>
-                                <ul>
-                                    <!-- TODO: populated list of all students from DB -->
+                                <ul ng-repeat="listStudent in listOfStudents">
+                                    <li>{{ listStudent.fullname }} <a href ng-click="deleteStudent(listStudent)">delete</a></li>
                                 </ul>
                     </div>
                 </div>
             </div>
         </main>
-<!--
-
-
-
- -->
-
     </body>
 </html>

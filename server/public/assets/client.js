@@ -1,4 +1,5 @@
-var myApp = angular.module('myApp', ['ngMaterial', 'ngMessages']);
+var myApp = angular.module('myApp', ['ngMaterial', 'ngMessages', 'ngRoute']);
+
     myApp.controller('TabCtrl', ['$scope', function($scope){
         $scope.tab = 1;
         $scope.setTab = function(newTab){
@@ -19,10 +20,70 @@ var myApp = angular.module('myApp', ['ngMaterial', 'ngMessages']);
     }]);
     myApp.controller('CallCtrl', ['$scope', 'CallService', function($scope, CallService){
 
-        $scope.students;
-        $scope.submitStudent = CallService.postStudents;
+        // Route params service https://docs.angularjs.org/api/ngRoute/service/$routeParams
+        function postStudentsDone(response){
+            getStudents();
+            clearScopeStudent();
+        }
 
-        $scope.users;
-        $scope.submitUser = CallService.postUsers;
-        
+        function postUsersDone(response){
+            getUsers();
+            clearScopeUser();
+        }
+
+        function getStudents(){
+            CallService.getStudents().then(function(response){
+                $scope.listOfStudents = response.data;
+            });
+        }
+
+        function getUsers(){
+            CallService.getUsers().then(function(response){
+                $scope.listOfUsers = response.data;
+            });
+        }
+
+        function clearScopeUser(){
+            $scope.user = {};
+        }
+
+        function clearScopeStudent(){
+            $scope.student = {};
+        }
+
+        function deleteUser(user){
+            CallService.deleteUsers(user).then(getUsers);
+        }
+
+        function deleteStudent(student){
+            CallService.deleteStudents(student).then(getStudents);
+        }
+
+        function init(){
+            clearScopeUser();
+            clearScopeStudent();
+            getStudents();
+            getUsers();
+        }
+
+        init();
+
+        $scope.submitStudent = function(){
+            CallService.postStudents($scope.student).then(postStudentsDone);
+        }
+
+        $scope.submitUser = function(){
+            CallService.postUsers($scope.user).then(postUsersDone);
+        }
+
+        $scope.deleteStudent = function(student){
+            deleteStudent(student);
+        }
+
+        $scope.deleteUser = function(user){
+            deleteUser(user);
+        }
+
+
+
     }]);

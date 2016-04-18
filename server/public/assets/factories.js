@@ -1,37 +1,31 @@
 myApp.factory('CallService', ['$http', function($http){
-        var allStudents;
-        var allUsers;
         var getStudents = function(){
-            $http.get('/students').then(function(response){
-                // allStudents.data = response.data;
+            return $http.get('/students').then(function(response){
+                return response;
             });
         };
-        var postStudents = function(){
-            $http.post('/students').then(function(){
-                getStudents();
+        var postStudents = function(students){
+            return $http.post('/students', students).then(function(response){
+                return response;
             });
         };
-        var deleteStudents = function(){
-            $http.delete('/students/' + students._id).then(function(){
-                getStudents();
-            });
+        var deleteStudents = function(student){
+            return $http.delete('/students/' + student._id);
         };
         var getUsers = function(){
-            $http.get('/users').then(function(response){
-                // allUsers.data = response.data;
+            return $http.get('/users').then(function(response){
+                return response;
             });
         };
         var postUsers = function(user){
-            $http.post('/users').then(function(response){
-                console.log(user);
-                getUsers();
+            return $http.post('/users', user).then(function(response){
+                return response;
             });
         };
-        var deleteUsers = function(){
-            $http.delete('/users/' + users._id).then(function(){
-                getUsers();
-            });
+        var deleteUsers = function(user){
+            return $http.delete('/users/' + user._id);
         };
+
     return{
         getStudents: getStudents,
         postStudents: postStudents,
