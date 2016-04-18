@@ -139,13 +139,14 @@ app.route('/users')
 
     app.post('/auth', function(req, res, next){
         passport.authenticate('local', function(err, user, info){
-            if(req.user.userName === 'admin'){
-                return {successRedirect: '/views/index.html'}
+            console.log(user.accountType);
+            if(user.accountType === 'admin'){
+                return res.redirect('/views/index.html');
             }
-            if(req.user.userName === 'bus-driver'){
-                return {successRedirect: '/views/pickup.html'}
+            if(user.accountType === 'bus-driver'){
+                return res.redirect('/views/pickup.html');
             }else{
-                return {failureRedirect: '/views/re-login.html'}
+                return res.redirect('/views/re-login.html');
             }
         })(req, res, next);
     });
