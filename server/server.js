@@ -96,15 +96,6 @@ app.route('/users')
         });
     });
 
-    // app.route('/users/:accountType').delete(function(req, res){
-    //     User.findByIdAndRemove(req.params.id, function(err, user){
-    //         if(err){
-    //             console.log(err);
-    //         }
-    //         res.send(user);
-    //     });
-    // });
-
     app.route('/students')
             .get(function(req, res){
                 Student.find(function(err, students){
@@ -137,9 +128,14 @@ app.route('/users')
         });
     });
 
+    var keepUser = {};
+
     app.post('/auth', function(req, res, next){
         passport.authenticate('local', function(err, user, info){
-            console.log(user.accountType);
+
+            keepUser = user;
+            console.log(keepUser);
+            // TODO keep for future implemeentation?
             if(user.accountType === 'admin'){
                 return res.redirect('/views/index.html');
             }
@@ -148,7 +144,25 @@ app.route('/users')
             }else{
                 return res.redirect('/views/re-login.html');
             }
+
+                // if(err){return next(err);}
+                // if(!user){
+                //     //TODO failure flash with req.flash()????
+                //     return res.redirect('/views/login.html');
+                // }
+                //
+                // req.logIn(user, function(err){
+                //     if(err){return next(err);}
+                //     return res.redirect('/views/index.html' + user);
+                // });
+
         })(req, res, next);
+    });
+
+        //keep below /auth post
+    app.get('/getcurrentuser', function(req, res){
+        //TODO clear out keepUser = {}
+        res.sendFile(keepUser);
     });
 
 app.get('/*', function(req, res){
